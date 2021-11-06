@@ -70,7 +70,8 @@ class BusinessesController extends Controller
                     'message' => 'Password is incorrect'
                 ], 404);
             } else {
-                $accessToken = $realBusiness->createToken('authToken')->accessToken;
+                $accessToken = Hash::make('accessTokenHash');
+
                 return [new BusinessesResource($realBusiness), 'accessToken' => $accessToken];
             }
         }

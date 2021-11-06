@@ -37,11 +37,7 @@ class GuestsController extends Controller
      */
     public function store(Request $request)
     {
-        $job = Job::where('id', $request->id)
-                ->update([
-                    'applied' => $request->applied + 1,
-                ]);
-        return new JobsResource($guest);
+        
     }
 
     /**
@@ -73,9 +69,15 @@ class GuestsController extends Controller
      * @param  \App\Models\Guest  $guest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Guest $guest)
+    public function update(Request $request, Job $guest)
     {
-        //
+        // return $guest->id;
+        $guest->where('id', $guest->id)
+                ->update([
+                    'applied' => $guest->applied + 1
+                ]);
+
+        return new JobsResource($guest);
     }
 
     /**

@@ -23,6 +23,7 @@ class JobsResource extends JsonResource
                 'type' => $this->type,
                 'conditions' => $this->conditions,
                 'categories' => $this->categories,
+                'applied' => $this->applied,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
              ] 
