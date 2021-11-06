@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Business;
+use App\Models\Job;
 use Illuminate\Http\Request;
 use App\Http\Resources\BusinessesResource;
+use App\Http\Resources\JobsResource;
 
 class BusinessesController extends Controller
 {
@@ -15,9 +17,7 @@ class BusinessesController extends Controller
      */
     public function index()
     {
-        $businesses = BusinessesResource::collection(Business::all());
 
-        return view('businesses.index');
     }
 
     /**
@@ -27,7 +27,7 @@ class BusinessesController extends Controller
      */
     public function create()
     {
-        return view('businesses.login');
+        // return view('businesses.login');
     }
 
     /**
@@ -38,7 +38,13 @@ class BusinessesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $business = Business::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password
+        ]);
+
+        return new BusinessesResource($business);
     }
 
     /**
@@ -49,7 +55,14 @@ class BusinessesController extends Controller
      */
     public function show(Business $business)
     {
-        //
+        $jobs = Job::where('business_id', $business->id)->get();
+        return  [
+            'id' => (string)$business->id,
+            'name' => $business->name,
+            'email' => $business->email,
+            'attribute' => 'business',
+            'jobs' => $jobs
+        ];
     }
 
     /**
@@ -72,7 +85,16 @@ class BusinessesController extends Controller
      */
     public function update(Request $request, Business $business)
     {
-        //
+        $current_business = $business;
+
+        $business->where('id', $business->id)
+                ->update([
+                    'name' => $request->name ?? $current_business->name,
+                    'email' => $request->email ?? $current_business->email,
+                    'password' => $request->password ?? $current_business->password,
+                ]);
+        
+        return new BusinessesResource($business);
     }
 
     /**
@@ -83,6 +105,7 @@ class BusinessesController extends Controller
      */
     public function destroy(Business $business)
     {
-        //
+        $business->delete();
+        return response()->json(null, 204);
     }
 }

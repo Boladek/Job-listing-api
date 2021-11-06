@@ -18,7 +18,7 @@ class JobsResource extends JsonResource
             'id' => (string)$this->id,
             'type' => 'Jobs',
             'attributes' => [
-                'name' => $this->title,
+                'name' => $this->name,
                 'description' => $this->description,
                 'type' => $this->type,
                 'conditions' => $this->conditions,

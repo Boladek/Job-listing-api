@@ -15,8 +15,7 @@ class JobsController extends Controller
      */
     public function index()
     {
-        $jobs = JobsResource::collection(Job::all());
-        return view('jobs.index');
+        return JobsResource::collection(Job::all());
     }
 
     /**
@@ -37,7 +36,17 @@ class JobsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $job = Job::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'type' => $request->type,
+            'conditions' => $request->conditions,
+            'categories' => $request->categories,
+            'applied' => $request->applied,
+            'business_id' => $request->business_id
+        ]);
+
+        return new JobsResource($job);   
     }
 
     /**
@@ -71,7 +80,16 @@ class JobsController extends Controller
      */
     public function update(Request $request, Job $job)
     {
-        //
+        $current_job = $job;
+
+        $job->where('id', $job->id)->update([
+            'name' => $request->name ?? $current_job->name,
+            'description' => $request->description ?? $current_job->description,
+            'type' => $request->type ?? $current_job->type,
+            'conditions' => $request->conditions ?? $current_job->conditions,
+            'categories' => $request->categories ?? $current_job->categories,
+        ]);
+        return new JobsResource($job);
     }
 
     /**
@@ -82,6 +100,7 @@ class JobsController extends Controller
      */
     public function destroy(Job $job)
     {
-        //
+        $job->delete();
+        return response()->json(null, 204);
     }
 }

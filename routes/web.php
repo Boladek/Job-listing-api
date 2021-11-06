@@ -18,4 +18,6 @@ use App\Http\Controllers\BusinessesController;
 Route::resource('/jobs', JobsController::class);
 Route::resource('/businesses', BusinessesController::class);
 
-Route::get('/businesses/login', [BusinessesController::class, 'create']);
+Route::get('/businesses/login', function () {
+    return view('businesses.login');
+});
