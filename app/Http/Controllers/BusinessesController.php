@@ -7,9 +7,12 @@ use App\Models\Job;
 use Illuminate\Http\Request;
 use App\Http\Resources\BusinessesResource;
 use App\Http\Resources\JobsResource;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\HasApiTokens;
 
 class BusinessesController extends Controller
 {
+    use HasApiTokens;
     /**
      * Display a listing of the resource.
      *
@@ -38,13 +41,39 @@ class BusinessesController extends Controller
      */
     public function store(Request $request)
     {
+
         $business = Business::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password
+            'password' => Hash::make($request->password)
         ]);
 
         return new BusinessesResource($business);
+    }
+
+    public function login(Request $request)
+    {
+        $business = $this->validate($request, [
+            'email' => ['required', 'string', 'max:30'],
+            'password' => ['required', 'string', 'max:30',]
+        ]);
+
+        $realBusiness = Business::where('email', $business['email'])->first();
+
+        if(!$realBusiness) {
+            return response()->json([
+                'message' => 'Business not found'
+            ], 404);
+        } else {
+            if(!Hash::check($business['password'], $realBusiness['password'])) {
+                return response()->json([
+                    'message' => 'Password is incorrect'
+                ], 404);
+            } else {
+                $accessToken = $realBusiness->createToken('authToken')->accessToken;
+                return [new BusinessesResource($realBusiness), 'accessToken' => $accessToken];
+            }
+        }
     }
 
     /**

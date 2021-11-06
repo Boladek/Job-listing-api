@@ -25,4 +25,10 @@ Route::apiResource('/businesses', BusinessesController::class);
 
 Route::apiResource('/jobs', JobsController::class);
 
+Route::post('/business', [BusinessesController::class, 'store']);
+Route::post('/business-login', [BusinessesController::class, 'login']);
+
+Route::get('/guests', [GuestsController::class, 'index']);
+Route::get('/guests/{guest}', [GuestsController::class, 'show']);
+
 // Route::apiResource('/guests', GuestsController::class);

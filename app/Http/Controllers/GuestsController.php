@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Job;
 use App\Models\Guest;
 use Illuminate\Http\Request;
+use App\Http\Resources\JobsResource;
 
 class GuestsController extends Controller
 {
@@ -14,7 +16,7 @@ class GuestsController extends Controller
      */
     public function index()
     {
-        //
+        return Job::all();
     }
 
     /**
@@ -35,7 +37,11 @@ class GuestsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $job = Job::where('id', $request->id)
+                ->update([
+                    'applied' => $request->applied + 1,
+                ]);
+        return new JobsResource($guest);
     }
 
     /**

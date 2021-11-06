@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->registerPolicies();
+
+        // Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
     }
 }
