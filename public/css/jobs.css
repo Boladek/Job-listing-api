@@ -1,0 +1,28 @@
+.jobs-container {
+    margin: 0 auto;
+    width: 70%;
+    border: 2px solid black;
+}
+
+.jobs-container > h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.jobs {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.job {
+    padding: 1rem;
+}
+
+.jobs a {
+    text-decoration: none;
+    color: #4CAF50;
+}
+
+.jobs a:hover {
+    text-decoration: underline;
+}
